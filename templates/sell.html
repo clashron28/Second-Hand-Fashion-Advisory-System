@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell - Second-Hand Fashion Advisor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .sell-container {
+            max-width: 800px;
+            margin: 120px auto;
+            background-color: var(--linen);
+            padding: 48px;
+            border: 1px solid var(--warm-border);
+        }
+        
+        .sell-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--deep-taupe);
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+        }
+
+        .form-control {
+            width: 100%;
+            background-color: transparent;
+            border: 1px solid var(--warm-border);
+            padding: 14px 16px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--warm-black);
+            transition: border-color 0.2s ease;
+            outline: none;
+            border-radius: 0;
+            appearance: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--deep-taupe);
+        }
+
+        select.form-control {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B5B4E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+
+        .file-upload-wrapper {
+            border: 1px dashed var(--deep-taupe);
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            background-color: rgba(255,255,255,0.4);
+            transition: background-color 0.2s ease;
+        }
+
+        .file-upload-wrapper:hover {
+            background-color: rgba(255,255,255,0.6);
+        }
+
+        .prediction-box {
+            display: none;
+            margin-top: 32px;
+            padding: 24px;
+            background-color: var(--sand);
+            color: var(--warm-black);
+            text-align: center;
+            border: 1px solid var(--warm-border);
+        }
+
+        .prediction-value {
+            font-family: var(--font-display);
+            font-size: 48px;
+            margin: 8px 0;
+        }
+
+        .btn-full {
+            width: 100%;
+            text-align: center;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar scrolled" id="navbar">
+        <div class="container nav-container">
+            <a href="/" class="logo">ELYNE</a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Catalog</a>
+                <a href="/sell" class="nav-link active">Sell</a>
+                <a href="/cart" class="nav-link">Cart {% if cart_count > 0 %}<span class="cart-badge" style="background: var(--accent); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; vertical-align: top;">{{ cart_count }}</span>{% endif %}</a>
+                <a href="#" class="nav-link">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="sell-container">
+            <div class="sell-header">
+                <h2>List Your Item</h2>
+                <p style="margin: 0 auto;">Get an AI-powered instant valuation and list your pre-loved fashion pieces.</p>
+            </div>
+
+            <form id="sellForm">
+                <div class="form-group">
+                    <label class="form-label">Upload Images</label>
+                    <div class="file-upload-wrapper" id="uploadWrapper" onclick="document.getElementById('imageUpload').click()">
+                        <div id="imagePreviewContainer" style="display: none; margin-bottom: 15px;">
+                            <img id="imagePreview" src="" alt="Preview" style="max-height: 200px; width: auto; border: 1px solid var(--warm-border);">
+                        </div>
+                        <p id="uploadText">Click to browse or drag and drop images here.</p>
+                        <input type="file" id="imageUpload" style="display: none;" accept="image/*">
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="form-group" style="grid-column: span 12;">
+                        <label class="form-label">Product Title</label>
+                        <input type="text" id="productTitle" class="form-control" placeholder="e.g. Vintage Nike Windbreaker" required>
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 6;">
+                        <label class="form-label">Brand</label>
+                        <input type="text" id="brand" class="form-control" list="sellBrandList" placeholder="e.g. Nike" required>
+                        <datalist id="sellBrandList">
+                            {% for b in brands %}
+                            <option value="{{ b }}">
+                            {% endfor %}
+                        </datalist>
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 6;">
+                        <label class="form-label">Category</label>
+                        <input type="text" id="category" class="form-control" list="sellCategoryList" placeholder="e.g. Tshirt" required>
+                        <datalist id="sellCategoryList">
+                            {% for c in categories %}
+                            <option value="{{ c }}">
+                            {% endfor %}
+                        </datalist>
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 4;">
+                        <label class="form-label">Color</label>
+                        <input type="text" class="form-control" id="color" name="color" placeholder="e.g. Black" required>
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 4;">
+                        <label class="form-label">Size</label>
+                        <select class="form-control" id="size" name="size" required>
+                            <option value="">Select Size</option>
+                            <option value="XS">XS</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 4;">
+                        <label class="form-label">Material</label>
+                        <input type="text" class="form-control" id="material" name="material" placeholder="e.g. Cotton" required>
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 4;">
+                        <label class="form-label">Item Age (Years)</label>
+                        <input type="number" class="form-control" id="itemAge" name="itemAge" placeholder="0" min="0" value="0" required>
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 12;">
+                        <label class="form-label">Quality (AI Detected)</label>
+                        <select class="form-control" id="quality" name="quality" required>
+                            <option value="Excellent">Excellent - Pristine condition</option>
+                            <option value="Good">Good - Minor wear, no defects</option>
+                            <option value="Fair">Fair - Visible wear or minor defects</option>
+                            <option value="Poor">Poor - Significant defects or damage</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" style="grid-column: span 12;">
+                        <label class="form-label">Product Description</label>
+                        <textarea class="form-control" id="description" name="description" placeholder="Describe the item's condition, style, and fit..." style="min-height: 100px;"></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary btn-full" id="predictBtn">Get Valuation</button>
+            </form>
+
+            <div id="predictionBox" class="prediction-box">
+                <p class="caption">Estimated Value</p>
+                <div class="prediction-value" id="predictionValue">₹0</div>
+                <p>Based on current market trends for similar items.</p>
+                <button id="publishBtn" class="btn-primary" style="margin-top: 16px; background: var(--ivory); color: var(--warm-black);">Publish Listing</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPredictedPrice = 0;
+
+        document.getElementById('publishBtn').addEventListener('click', async () => {
+            const formData = new FormData();
+            formData.append('title', document.getElementById('productTitle').value);
+            formData.append('brand', document.getElementById('brand').value);
+            formData.append('category', document.getElementById('category').value);
+            formData.append('price', currentPredictedPrice);
+            formData.append('description', document.getElementById('description').value);
+            formData.append('image', document.getElementById('imageUpload').files[0]);
+
+            try {
+                const response = await fetch('/api/list_product', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                if(result.success) {
+                    alert('Product listed successfully!');
+                    window.location.href = '/';
+                } else {
+                    alert('Error listing product: ' + result.error);
+                }
+            } catch(error) {
+                console.error('Error listing product', error);
+                alert('Error listing product. Please try again.');
+            }
+        });
+        document.getElementById('imageUpload').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            document.getElementById('uploadText').innerText = 'Analyzing Image with AI...';
+
+            const formData = new FormData();
+            formData.append('image', file);
+
+            // Show Preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('imagePreview').src = e.target.result;
+                document.getElementById('imagePreviewContainer').style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+
+            try {
+                const response = await fetch('/api/analyze_image', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                if(result.brand && !result.error) {
+                    const brandInput = document.getElementById('brand');
+                    if (result.brand !== "unable to predict") {
+                        brandInput.value = result.brand;
+                        document.getElementById('uploadText').innerText = 'Analyzed! Detected Quality: ' + result.quality;
+                    } else {
+                        document.getElementById('uploadText').innerText = 'Analyzed! Brand: ' + result.brand + ' | Quality: ' + result.quality;
+                    }
+
+                    const categoryInput = document.getElementById('category');
+                    if (result.category) {
+                        categoryInput.value = result.category;
+                    }
+
+                    document.getElementById('color').value = result.color;
+                    document.getElementById('quality').value = result.quality;
+                    
+                    document.getElementById('uploadText').innerText = 'Analyzed! Detected Quality: ' + result.quality;
+                } else {
+                    document.getElementById('uploadText').innerText = 'Image uploaded. Could not analyze.';
+                }
+            } catch(error) {
+                console.error('Error analyzing image', error);
+                document.getElementById('uploadText').innerText = 'Error analyzing image. Try again.';
+            }
+        });
+
+        document.getElementById('sellForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('predictBtn');
+            btn.innerText = 'Analyzing...';
+            btn.disabled = true;
+
+            const data = {
+                Brand: document.getElementById('brand').value,
+                Category: document.getElementById('category').value,
+                Color: document.getElementById('color').value,
+                Size: document.getElementById('size').value,
+                Material: document.getElementById('material').value,
+                ItemAge: document.getElementById('itemAge').value,
+                Quality: document.getElementById('quality').value
+            };
+
+            try {
+                const response = await fetch('/api/predict_price', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                
+                if(result.price) {
+                    currentPredictedPrice = result.price;
+                    document.getElementById('predictionValue').innerText = '₹' + result.price.toFixed(2);
+                    document.getElementById('predictionBox').style.display = 'block';
+                }
+            } catch(error) {
+                console.error('Error fetching prediction', error);
+                alert('Could not get valuation. Please try again.');
+            } finally {
+                btn.innerText = 'Get Valuation';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

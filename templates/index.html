@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Second-Hand Fashion Advisor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="/" class="logo">ELYNE</a>
+            <div class="nav-links">
+                <a href="/" class="nav-link active">Catalog</a>
+                <a href="/sell" class="nav-link">Sell</a>
+                <a href="/cart" class="nav-link">Cart {% if cart_count > 0 %}<span class="cart-badge" style="background: var(--accent); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; vertical-align: top;">{{ cart_count }}</span>{% endif %}</a>
+                <a href="#" class="nav-link">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero container grid">
+        <div class="hero-image-col">
+            <!-- Using a placeholder but will add logic to use actual images -->
+            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop" alt="Editorial Fashion">
+        </div>
+        <div class="hero-text-col">
+            <h1 class="hero-title display">Curated Classics</h1>
+            <p>Discover pieces with a story. Each item is hand-reviewed for condition and authenticity.</p>
+            <br>
+            <a href="#catalog" class="btn-primary">Shop Collection</a>
+        </div>
+    </section>
+
+    <div id="filterOverlay" class="filter-overlay"></div>
+    <div id="filterSidebar" class="filter-sidebar">
+        <div class="sidebar-header">
+            <h2 class="display">Filters</h2>
+            <button id="closeSidebar" class="close-sidebar">&times;</button>
+        </div>
+        <form action="/" method="GET">
+            <div class="filter-group">
+                <label class="filter-label">Brand</label>
+                <input type="text" name="brand" class="filter-input" list="brandList" placeholder="Type or select brand..." value="{{ brand if brand else '' }}">
+                <datalist id="brandList">
+                    {% for b in all_brands %}
+                    <option value="{{ b }}">
+                    {% endfor %}
+                </datalist>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Category</label>
+                <input type="text" name="category" class="filter-input" list="categoryList" placeholder="Type or select category..." value="{{ category if category else '' }}">
+                <datalist id="categoryList">
+                    {% for c in all_categories %}
+                    <option value="{{ c }}">
+                    {% endfor %}
+                </datalist>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Color</label>
+                <select name="color" class="filter-input">
+                    <option value="">All Colors</option>
+                    {% for col in all_colors %}
+                    <option value="{{ col }}" {% if color == col %}selected{% endif %}>{{ col }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Price Range (₹)</label>
+                <div class="price-range-inputs">
+                    <input type="number" name="min_price" class="filter-input" placeholder="Min" value="{{ min_price if min_price else '' }}">
+                    <span>—</span>
+                    <input type="number" name="max_price" class="filter-input" placeholder="Max" value="{{ max_price if max_price else '' }}">
+                </div>
+            </div>
+            <button type="submit" class="btn-primary apply-filters-btn">Apply Filters</button>
+            <a href="/" style="display: block; text-align: center; margin-top: 16px; font-size: 12px; color: var(--muted-stone); text-decoration: none; text-transform: uppercase; letter-spacing: 1px;">Clear All</a>
+        </form>
+    </div>
+
+    <section id="catalog" class="section container">
+        <div class="section-header">
+            <h2>New Arrivals</h2>
+            <a href="#" class="nav-link">View All</a>
+        </div>
+
+        <div class="catalog-controls">
+            <div class="search-bar-container">
+                <form action="/" method="GET" id="searchForm">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" name="search" class="search-input" placeholder="Search for brands, colors, categories..." value="{{ search if search else '' }}">
+                </form>
+            </div>
+            <button id="openFilter" class="filter-btn">
+                <span>Filter</span>
+                <span style="font-size: 18px;">+</span>
+            </button>
+        </div>
+
+        <div class="product-grid">
+            {% if products %}
+            {% for product in products %}
+            <a href="/product/{{ product.id }}" class="product-card-link" style="text-decoration: none; color: inherit;">
+                <div class="product-card">
+                    <div class="product-image-container">
+                        {% if product.is_user %}
+                        <img src="{{ product.image_url }}" alt="{{ product.productDisplayName }}">
+                        {% else %}
+                        <img src="{{ url_for('serve_image', filename=product.id|int|string + '.jpg') }}" alt="{{ product.productDisplayName }}" onerror="this.src='https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop'">
+                        {% endif %}
+                    </div>
+                    <div class="product-brand">{{ product.articleType }}</div>
+                    <div class="product-title">{{ product.productDisplayName }}</div>
+                    <div class="product-price">₹{{ product['Price (INR)']|int }}</div>
+                </div>
+            </a>
+            {% endfor %}
+            {% else %}
+            <div style="grid-column: 1 / -1; text-align: center; padding: 60px 0;">
+                <p style="font-size: 18px; color: var(--muted-stone);">No products found matching your search criteria.</p>
+                <a href="/" style="color: var(--sand); text-decoration: underline; margin-top: 10px; display: inline-block;">Clear all filters</a>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <script>
+        const openFilter = document.getElementById('openFilter');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const filterSidebar = document.getElementById('filterSidebar');
+        const filterOverlay = document.getElementById('filterOverlay');
+
+        openFilter.addEventListener('click', () => {
+            filterSidebar.classList.add('active');
+            filterOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        const closeFunc = () => {
+            filterSidebar.classList.remove('active');
+            filterOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        };
+
+        closeSidebar.addEventListener('click', closeFunc);
+        filterOverlay.addEventListener('click', closeFunc);
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

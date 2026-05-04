@@ -1,0 +1,295 @@
+D E S I G N  S P E C I F I C A T I O N  
+Second -Hand Fashion  
+Advisor  
+ 
+Visual Design Language & UI Specification  
+Adapted from the Toile Fashion Landing Page aesthetic  
+  
+01  
+Design Philosophy  
+This design system draws from the Toile editorial aesthetic — a refined intersection of contemporary 
+luxury fashion and understated modernism. The visual language is rooted in warm neutrals, generous 
+white space, and a typographic hierarchy that feels cura ted rather than algorithmic.  
+Every UI decision prioritises elegance over novelty. Interactions feel deliberate. Negative space is used 
+as a compositional element, not an afterthought. The overall impression should be that of a high -end 
+editorial magazine — the kind that earns its plac e on a coffee table.  
+ 
+Core Design Principles  
+Restraint  Fewer elements, more presence. Only show what serves the user's 
+decision.  
+Warmth  Avoid sterile white and cold greys. All neutrals lean warm — ivory, sand, 
+taupe.  
+Editorial  Typography -led layouts. The serif typeface carries visual weight, not 
+imagery.  
+Tactility  Soft textures, generous padding, and subtle hover states that feel physical.  
+Clarity  Information hierarchy is unambiguous. One focal point per screen section.  
+ 
+  
+02  
+Colour System  
+The palette is drawn entirely from natural, organic tones. No pure blacks, no cool whites, no saturated 
+hues. Every colour has been shifted towards warmth — this is non -negotiable for the aesthetic.  
+ 
+Primary Palette            
+Warm Black  
+#1A1410  Deep Taupe  
+#6B5B4E  Sand 
+#C4A882  Linen  
+#EDE8DF  Ivory  
+#F5F0E8  
+ 
+Extended Palette            
+Muted Stone  
+#9E9083  Warm Border  
+#D5CCB8  Espresso  
+#3D2F25  Parchment  
+#F0EBE0  White  
+#FFFFFF  
+ 
+Colour Usage Rules  
+Background (page)  Ivory #F5F0E8 — never pure white  
+Background (card/panel)  Linen #EDE8DF for subtle separation  
+Primary text  Warm Black #1A1410  
+Body / secondary text  Deep Taupe #6B5B4E  
+Muted / caption text  Muted Stone #9E9083  
+Accent / highlight  Sand #C4A882 — used sparingly for CTAs and dividers  
+Borders / rules  Warm Border #D5CCB8 — very thin (1px)  
+Never use  RGB(0,0,0) black, #FFFFFF pure white, or any cool -toned grey  
+ 
+  
+03  
+Typography  
+Typography is the primary visual element of this design. Two typefaces only. A classical serif for display 
+and headings, and a clean humanist sans -serif for body copy. The contrast between these two voices — 
+one editorial, one functional — creates the cent ral tension that makes the design feel alive.  
+ 
+Typeface Choices  
+Display / Heading  Cormorant Garamond (Google Fonts, free) — Georgia as fallback  
+Body / UI  Inter (Google Fonts, free) — Calibri as fallback  
+Monospace  IBM Plex Mono — for tags, labels, and metadata only  
+ 
+Type Scale  
+Display  The Edit  Cormorant 56px / light / line -height 1.0  
+ 
+H1 Curated for You  Cormorant 36px / regular / line -height 
+1.1 
+ 
+H2 New Arrivals  Cormorant 26px / regular / line -height 
+1.2 
+ 
+H3 Summer Collection  Cormorant 20px / regular / line -height 
+1.3 
+ 
+Body Large  Discover pieces with a story.  Inter 17px / regular / line -height 1.6  
+ 
+Body  Each item is hand -reviewed for condition and 
+authenticity.  Inter 14px / regular / line -height 1.6  
+ 
+Caption  S E C O N D  H A N D  ·  V E R I F I E D  Inter 12px / uppercase / tracking 0.1em  
+ 
+Typography Rules  
+Heading weight  Always light or regular — never bold for serif headings  
+Letter spacing  Uppercase labels get +0.08 to 0.12em tracking  
+Paragraph width  Body text max -width: 640px — never full viewport width  
+Italic use  Sparingly, for product names and editorial emphasis only  
+Numeric style  Use oldstyle figures (font -feature -settings: 'onum') when available  
+ 
+  
+04  
+Layout & Grid  
+The layout system is structured but asymmetric. A 12 -column CSS grid is used as the foundation, but 
+compositions deliberately break rigid symmetry — a wide editorial image offset by a narrow text column 
+— to give the interface an artful, non -templated feel . 
+ 
+Grid Specification  
+Grid type  12-column CSS Grid  
+Max content width  1320px  
+Outer gutter  80px on screens >= 1440px / 48px on 1280px  
+Column gap  24px  
+Section padding  Vertical: 96px top and bottom minimum  
+Safe zone  No interactive element within 24px of viewport edge  
+ 
+Page Zones  
+Navbar  
+12 cols  Full-width, fixed position. 80px height. Logo centred or left -aligned. Nav links 
+right -aligned. Transparent on hero, ivory on scroll.  
+ 
+Hero  
+7 + 4 cols  Full-viewport -height section. Editorial image left (7 cols), headline text right 
+(4 cols, offset). Large display serif. Minimal CTA below headline.  
+ 
+Category Strip  
+3 cols each  Horizontal scroll of 4 -6 category thumbnails. Square crop ratio 1:1. 
+Uppercase caption below each. Even column distribution.  
+ 
+Product Grid  
+3-4 col cards  Asymmetric masonry -style grid. Alternating portrait and landscape cards. 
+Cards are 3 or 4 columns wide. No card borders — spacing does the 
+separating.  
+ 
+Editorial Band  
+5 cols centred  Full-bleed Linen (#EDE8DF) background. Text block centred, 5 cols wide. 
+Large pull -quote in serif italic. Optional micro -imagery on sides.  
+ 
+Footer  
+12 cols, 4 groups  4-column layout. Brand name large left, navigation links cols 2 -3, minimal 
+legal text col 4. Ivory background. Single top border rule in Sand.  
+ 
+  
+05  
+Component Specs  
+All interactive components follow the same warmth principle as the rest of the design. States are 
+communicated through subtle transitions, not dramatic colour shifts. Hover states should feel like a 
+gentle lean -in, not a flash.  
+ 
+Navigation Bar  
+Height  80px  
+Background  Transparent on hero -> Ivory #F5F0E8 on scroll (backdrop -blur: 8px)  
+Logo  Serif wordmark, 22px, Warm Black. Centred in navbar.  
+Nav links  Inter 13px uppercase, letter -spacing 0.1em, Taupe. Right -aligned.  
+Active link  Sand #C4A882 underline, 1px, offset 4px  
+Hamburger (tablet)  Appears below 1024px. 2 lines, 22px wide, 2px stroke, Warm Black  
+ 
+Product Card  
+Image ratio  3:4 portrait (standard) or 4:3 landscape (featured)  
+Image treatment  object -fit: cover. Slight desaturation on hover to 90% saturation  
+Background  None — card floats on page background  
+Title Cormorant 18px, Warm Black  
+Price  Inter 14px, Taupe. Strikethrough original price in Muted Stone  
+Condition tag  Inter 11px uppercase, Sand, letter -spacing 0.1em. e.g. 'EXCELLENT 
+CONDITION'  
+Hover state  translateY( -4px), shadow: 0 12px 32px rgba(26,20,16,0.08), transition 
+240ms ease  
+No border  Cards have no border or card outline — whitespace defines them  
+Wishlist icon  Top-right corner, 20px, appears on hover only, Warm Black  
+ 
+Buttons  
+Primary CTA  Background: Warm Black / Text: Ivory / Inter 13px uppercase / Padding: 
+14px 32px / border -radius: 0  
+Secondary CTA  Background: transparent / Text: Warm Black / Border: 1px Warm Black / 
+Hover: fills to Warm Black  
+Ghost / link btn  No background, no border / Text: Taupe / border -bottom 1px Sand on 
+hover  
+Disabled state  Opacity: 0.35 / cursor: default  
+Transition  All button states: 180ms ease  
+ 
+Form Inputs  
+Height  48px  
+Background  Linen #EDE8DF  
+Border  1px solid Warm Border #D5CCB8 / on focus: 1px solid Sand #C4A882  
+Border radius  0px — sharp corners throughout  
+Label  Inter 11px uppercase, Muted Stone, displayed above input  
+Placeholder  Inter 14px, Muted Stone #9E9083  
+Error state  Border: 1px #8B4A42 (warm red) / message: Inter 12px #8B4A42 below 
+input  
+ 
+Tags & Badges  
+Condition tag  Inter 10px uppercase / background Linen / border 1px Warm Border / 
+padding 4px 10px / border -radius: 0  
+Category chip  Same as condition tag; selected: Warm Black bg + Ivory text  
+'New Arrival' badge  Sand background / Ivory text / Inter 10px uppercase / border -radius: 0  
+ 
+Imagery  
+Style  Warm, natural light. Slightly desaturated. Avoid stark studio lighting.  
+Colour treatment  Apply a very subtle warm overlay (sepia blend mode ~5 -8% opacity) for 
+cohesion  
+Subject framing  Loose, editorial — garments on hangers, flatlay, or worn by models in 
+neutral settings  
+Aspect ratios  3:4 for product, 16:9 for editorial bands, 1:1 for category thumbnails  
+Loading state  Linen (#EDE8DF) background placeholder — no grey skeletons  
+ 
+  
+06  
+Motion & Interaction  
+Motion should be barely perceptible — the goal is to make the interface feel alive without drawing 
+attention to its mechanics. Think of a high -end boutique: things move softly, gracefully, never abruptly.  
+ 
+Easing & Duration  
+Default ease  cubic -bezier(0.25, 0.1, 0.25, 1.0) — smooth decelerate  
+Hover transitions  160-240ms  
+Section reveals  400-600ms, staggered 80ms per child element  
+Modal / overlay open  280ms ease -out 
+Scroll parallax  Hero image: 0.3x scroll rate relative to viewport  
+Never use  Bounce, spring, or elastic easings — these break the luxury feel  
+ 
+Scroll Behaviour  
+Hero fade  Headline opacity 1 -> 0 as user scrolls past hero. Starts at 30% scroll depth.  
+Sticky nav  Becomes visible (ivory bg) after scrolling 100px. 240ms ease transition.  
+Card entrance  Cards animate from opacity:0 translateY(20px) -> opacity:1 translateY(0) 
+on viewport enter. Stagger: 60ms.  
+Category strip  Horizontal scroll, no visible scrollbar. Drag -to-scroll enabled.  
+ 
+  
+07  
+Spacing System  
+Spacing uses an 8px base unit. All spacing values are multiples of 8 — this creates visual rhythm and 
+ensures every element aligns to an invisible underlying grid.  
+ 
+4px  (0.5x base)  Icon -to-label gaps, internal tag padding  
+8px  (1x base)  Tight sibling spacing  
+16px (2x base)  Standard inline spacing, small gaps  
+24px (3x base)  Grid gap, component internal padding  
+32px (4x base)  Card padding, section divider spacing  
+48px (6x base)  Between related blocks within a section  
+64px (8x base)  Between distinct content areas on the same screen  
+96px (12x base)  Top and bottom section padding (desktop)  
+128px (16x base)  Hero section padding, footer padding  
+ 
+Whitespace is structural. Removing spacing to fit more content is never an acceptable solution — 
+instead, redesign the content hierarchy.  
+ 
+  
+08  
+Responsive Behaviour  
+This specification is PC -first. The breakpoint system below provides guidance for responsive adaptation, 
+but all design decisions and measurements in this document describe the 1440px desktop experience.  
+ 
+1440px (Primary)  Full design as specified. This is the canonical reference viewport.  
+1280px  Outer gutter reduces from 80px to 48px. Grid otherwise unchanged.  
+1024px  Navigation collapses to hamburger. Product grid reduces to 3 columns.  
+768px  Single -column layout begins. Section padding reduces to 64px. Hero image 
+stacks above text.  
+375px (Mobile)  Out of scope for this document. Follow a separate mobile spec.  
+ 
+  
+09  
+Design Do's & Don'ts  
+These are the rules that protect the aesthetic integrity of the design. When in doubt, look at the 
+reference — Toile's visual language is the north star.  
+ 
+Do 
+– Use generous padding — if it looks like too much space, it is probably correct.  
+– Let the serif typeface dominate. Imagery supports; type leads.  
+– Keep the palette restricted. Every element must use a colour from the defined system.  
+– Round nothing. Zero border -radius on all interactive elements.  
+– Use thin rules (1px Sand or Warm Border) as section separators rather than contrast blocks.  
+– Favour asymmetric layouts — a perfectly centred, symmetrical composition reads as generic.  
+– Use the uppercase + letter -spacing convention for all labels, metadata, and categories.  
+ 
+Don't  
+– Never use pure black (#000000) or pure white (#FFFFFF) anywhere on the page.  
+– Never use bold weight on serif headings — this breaks the editorial lightness.  
+– Never use blue, red, green, or any saturated accent colour.  
+– Never add drop shadows heavier than 0 12px 32px rgba(26,20,16,0.08).  
+– Never add more than two typefaces to the stack.  
+– Never use rounded buttons, pill shapes, or any border -radius > 0.  
+– Never crowd the layout — adding content means removing something else first.  
+– Never use stock -photography cliches (hands on keyboards, generic smiling people).  
+ 
+  
+10  
+Design Reference  
+This design system is adapted from the Toile Fashion Landing Page visual direction (Dribbble, 2024). The 
+reference establishes the aesthetic DNA: warm editorial neutrals, serif -forward typography, and a 
+distinctly non -algorithmic layout sensibility.  
+ 
+Primary reference  Toile — Fashion Landing Page Website (Dribbble #25292997)  
+Typeface source  Google Fonts — Cormorant Garamond, Inter, IBM Plex Mono  
+Colour model  All hex values defined in Section 02 are CSS -ready sRGB  
+Icon set  Lucide Icons (MIT licence) — 20px, 1.5px stroke weight, Warm Black  
+Grid tool  CSS Grid with 12 columns; Tailwind CSS v3 or custom implementation  
+Version  1.0 — Initial Design Specification  
+ 
+ 
+ 
+S e c o n d -H a n d  F a s h i o n  A d v i s o r   ·   D e s i g n  S p e c i f i c a t i o n   ·   v 1 . 0  
